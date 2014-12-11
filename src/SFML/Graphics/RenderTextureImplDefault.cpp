@@ -28,6 +28,7 @@
 #include <SFML/Graphics/RenderTextureImplDefault.hpp>
 #include <SFML/Graphics/GLCheck.hpp>
 #include <SFML/Graphics/TextureSaver.hpp>
+#include <SFML/Graphics/RenderOptions.hpp>
 #include <SFML/Window/Context.hpp>
 #include <SFML/System/Err.hpp>
 
@@ -62,7 +63,10 @@ bool RenderTextureImplDefault::create(unsigned int width, unsigned int height, u
     m_height = height;
 
     // Create the in-memory OpenGL context
-    m_context = new Context(ContextSettings(depthBuffer ? 32 : 0), width, height);
+    if(sfExt::StencilBufferEnabled)
+        m_context = new Context(ContextSettings(24, 8, 0), width, height);
+    else
+        m_context = new Context(ContextSettings(depthBuffer ? 32 : 0), width, height);
 
     return true;
 }
