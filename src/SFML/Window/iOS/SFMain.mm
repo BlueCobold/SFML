@@ -48,14 +48,14 @@
 
 
 ////////////////////////////////////////////////////////////
-__attribute__((weak)) int sfmlMain(int, char**)
-{
-    return sfmlMain();
-}
-
-
-////////////////////////////////////////////////////////////
-__attribute__((weak)) int sfmlMain()
-{
-    return 0;
-}
+//__attribute__((weak)) int sfmlMain(int, char**)
+//{
+//    return sfmlMain();
+//}
+//
+//
+//////////////////////////////////////////////////////////////
+//__attribute__((weak)) int sfmlMain()
+//{
+//    return 0;
+//}

@@ -49,7 +49,7 @@
 
 
 ////////////////////////////////////////////////////////////
-int main(int argc, char** argv)
+int main2(int argc, char** argv)
 {
     // Note: we intentionally drop command line arguments,
     // there's no such thing as a command line on an iOS device :)
