@@ -31,6 +31,7 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/VertexArray.hpp>
 #include <SFML/Graphics/GLCheck.hpp>
+#include <SFML/Graphics/RenderOptions.hpp>
 #include <SFML/System/Err.hpp>
 #include <iostream>
 
@@ -95,9 +96,15 @@ void RenderTarget::clear(const Color& color)
     {
         // Unbind texture to fix RenderTexture preventing clear
         applyTexture(NULL);
-
+        
         glCheck(glClearColor(color.r / 255.f, color.g / 255.f, color.b / 255.f, color.a / 255.f));
-        glCheck(glClear(GL_COLOR_BUFFER_BIT));
+        if(sfExt::StencilBufferEnabled)
+        {
+            glCheck(glStencilMask(0xFF));
+            glCheck(glClear(GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT));
+        }
+        else
+            glCheck(glClear(GL_COLOR_BUFFER_BIT));
     }
 }
 
