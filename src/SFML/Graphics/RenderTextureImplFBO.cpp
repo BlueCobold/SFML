@@ -28,6 +28,7 @@
 #include <SFML/Graphics/RenderTextureImplFBO.hpp>
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/GLCheck.hpp>
+#include <SFML/Graphics/RenderOptions.hpp>
 #include <SFML/System/Err.hpp>
 
 
@@ -109,8 +110,18 @@ bool RenderTextureImplFBO::create(unsigned int width, unsigned int height, unsig
             return false;
         }
         glCheck(GLEXT_glBindRenderbuffer(GLEXT_GL_RENDERBUFFER, m_depthBuffer));
-        glCheck(GLEXT_glRenderbufferStorage(GLEXT_GL_RENDERBUFFER, GLEXT_GL_DEPTH_COMPONENT, width, height));
-        glCheck(GLEXT_glFramebufferRenderbuffer(GLEXT_GL_FRAMEBUFFER, GLEXT_GL_DEPTH_ATTACHMENT, GLEXT_GL_RENDERBUFFER, m_depthBuffer));
+        if(sfExt::StencilBufferEnabled)
+        {
+            err() << "Creating FBO with stencil" << std::endl;
+            glCheck(GLEXT_glRenderbufferStorage(GLEXT_GL_RENDERBUFFER, GLEXT_GL_DEPTH24_STENCIL8, width, height));
+            glCheck(GLEXT_glFramebufferRenderbuffer(GLEXT_GL_FRAMEBUFFER, GLEXT_GL_DEPTH_ATTACHMENT, GLEXT_GL_RENDERBUFFER, m_depthBuffer));
+            glCheck(GLEXT_glFramebufferRenderbuffer(GLEXT_GL_FRAMEBUFFER, GLEXT_GL_STENCIL_ATTACHMENT, GLEXT_GL_RENDERBUFFER, m_depthBuffer));
+        }
+        else
+        {
+            glCheck(GLEXT_glRenderbufferStorage(GLEXT_GL_RENDERBUFFER, GLEXT_GL_DEPTH_COMPONENT, width, height));
+            glCheck(GLEXT_glFramebufferRenderbuffer(GLEXT_GL_FRAMEBUFFER, GLEXT_GL_DEPTH_ATTACHMENT, GLEXT_GL_RENDERBUFFER, m_depthBuffer));
+        }
     }
 
     // Link the texture to the frame buffer
