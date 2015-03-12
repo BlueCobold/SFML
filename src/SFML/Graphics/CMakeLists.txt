@@ -23,6 +23,8 @@ set(SRC
     ${INCROOT}/PrimitiveType.hpp
     ${INCROOT}/Rect.hpp
     ${INCROOT}/Rect.inl
+    ${SRCROOT}/RenderOptions.cpp
+    ${INCROOT}/RenderOptions.hpp
     ${SRCROOT}/RenderStates.cpp
     ${INCROOT}/RenderStates.hpp
     ${SRCROOT}/RenderTexture.cpp
