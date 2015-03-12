@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////
 //
 // SFML - Simple and Fast Multimedia Library
-// Copyright (C) 2007-2014 Laurent Gomila (laurent.gom@gmail.com)
+// Copyright (C) 2007-2015 Laurent Gomila (laurent@sfml-dev.org)
 //
 // This software is provided 'as-is', without any express or implied warranty.
 // In no event will the authors be held liable for any damages arising from the use of this software.
@@ -99,6 +99,23 @@ xcb_screen_t* XCBScreenOfDisplay(xcb_connection_t* connection, int screen_nbr)
     }
 
     return NULL;
+}
+
+////////////////////////////////////////////////////////////
+xcb_screen_t* XCBDefaultScreen(xcb_connection_t* connection)
+{
+    assert(connection == XGetXCBConnection(sharedDisplay));
+    return XCBScreenOfDisplay(connection, XDefaultScreen(sharedDisplay));
+}
+
+////////////////////////////////////////////////////////////
+xcb_window_t XCBDefaultRootWindow(xcb_connection_t* connection)
+{
+    assert(connection == XGetXCBConnection(sharedDisplay));
+    xcb_screen_t* screen = XCBScreenOfDisplay(connection, XDefaultScreen(sharedDisplay));
+    if (screen)
+        return screen->root;
+    return 0;
 }
 
 } // namespace priv
