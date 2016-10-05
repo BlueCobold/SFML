@@ -89,12 +89,6 @@ bool SensorImpl::open(Sensor::Type sensor)
     if (!m_sensor)
         return false;
 
-    // Get the minimum delay allowed between events
-    Time minimumDelay = microseconds(ASensor_getMinDelay(m_sensor));
-
-    // Set the event rate (not to consume too much battery)
-    ASensorEventQueue_setEventRate(sensorEventQueue, m_sensor, minimumDelay.asMicroseconds());
-
     // Save the index of the sensor
     m_index = static_cast<unsigned int>(sensor);
 
@@ -123,7 +117,15 @@ Vector3f SensorImpl::update()
 void SensorImpl::setEnabled(bool enabled)
 {
     if (enabled)
+    {
         ASensorEventQueue_enableSensor(sensorEventQueue, m_sensor);
+
+        // Get the minimum delay allowed between events
+        Time minimumDelay = microseconds(ASensor_getMinDelay(m_sensor));
+
+        // Set the event rate (not to consume too much battery)
+        ASensorEventQueue_setEventRate(sensorEventQueue, m_sensor, minimumDelay.asMicroseconds());
+    }
     else
         ASensorEventQueue_disableSensor(sensorEventQueue, m_sensor);
 }
